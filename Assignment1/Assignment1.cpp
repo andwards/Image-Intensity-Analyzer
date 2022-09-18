@@ -20,8 +20,11 @@ double calcCentralMoments(std::map<int, double> pd, double mean, int n);
 
 int main()
 {
-    // TODO: Select current directory and then add /Images - also look into central Moments
-    std::vector<cv::String> list_of_imgs = readFiles("D:/Coding Projects/Assignment1/Assignment1/Images", true);
+    std::cout << "Please enter the path to the images: " << std::endl;
+    std::string filepath;
+    std::getline(std::cin, filepath);
+    // "D:/Coding Projects/Assignment1/Assignment1/Images"
+    std::vector<cv::String> list_of_imgs = readFiles(filepath, true);
 
     int n = 0;
     std::cout << "Please select a value of n for the central Moments" << std::endl;
@@ -75,7 +78,7 @@ int main()
         }
 
         // Color image
-        if (isColor) {
+        else if (isColor) {
             cv::Mat img = cv::imread(list_of_imgs[i]);
             std::string filepath = list_of_imgs[i];
             cv::imshow(filepath, img);
@@ -116,23 +119,24 @@ int main()
             std::cout << std::endl;
 
             double redVariance = calcVariance(red_pd, redMean);
-            std::cout << "Red Variance: " << redVariance << std::endl;
+            std::cout << "Red Variance: " << round(redVariance) << std::endl;
             double blueVariance = calcVariance(blue_pd, blueMean);
-            std::cout << "Blue Variance: " << blueVariance << std::endl;
+            std::cout << "Blue Variance: " << round(blueVariance) << std::endl;
             double greenVariance = calcVariance(green_pd, greenMean);
-            std::cout << "Green Variance: " << greenVariance << std::endl;
+            std::cout << "Green Variance: " << round(greenVariance) << std::endl;
 
             std::cout << std::endl;
 
             double RedCentralMoments = calcCentralMoments(red_pd, redMean, n);
-            std::cout << "Red Central Moments: " << RedCentralMoments << std::endl;
+            std::cout << "Red Central Moments: " << round(RedCentralMoments) << std::endl;
             double BlueCentralMoments = calcCentralMoments(blue_pd, blueMean, n);
-            std::cout << "Blue Central Moments: " << BlueCentralMoments << std::endl;
+            std::cout << "Blue Central Moments: " << round(BlueCentralMoments) << std::endl;
             double GreenCentralMoments = calcCentralMoments(green_pd, greenMean, n);
-            std::cout << "Green Central Moments: " << GreenCentralMoments << std::endl;
+            std::cout << "Green Central Moments: " << round(GreenCentralMoments) << std::endl;
         }
-
-        
+        else {
+            std::cout << "Image not found!" << std::endl;
+        }
     }
         // Wait for a keystroke
         cv::waitKey(0);
@@ -187,9 +191,9 @@ std::vector<std::map<int, int>> colorIntensity(cv::Mat img)
     for (int i = 0; i < img.rows; i++) {
         for (int j = 0; j < img.cols; j++) {
 
-            int red = img.at<cv::Vec3b>(i, j)[0];
-            int blue = img.at<cv::Vec3b>(i, j)[1];
-            int green = img.at<cv::Vec3b>(i, j)[2];
+            int blue = img.at<cv::Vec3b>(i, j)[0];
+            int green = img.at<cv::Vec3b>(i, j)[1];
+            int red = img.at<cv::Vec3b>(i, j)[2];
 
             // Red
             if (red_iv.count(red) > 0) {
